@@ -104,13 +104,21 @@ const STEPS = [
   },
 ]
 
-export function Landing() {
+type LandingProps = {
+  loggedIn?: boolean
+  appHref?: string
+}
+
+export function Landing({ loggedIn = false, appHref = '/login' }: LandingProps) {
+  const primaryLabel = loggedIn ? 'Ir para o app' : 'Criar conta grátis'
+  const navLabel = loggedIn ? 'Ir para o app' : 'Entrar'
+
   return (
     <div className="landing">
       <header className="landing-nav">
         <Logo />
-        <Link to="/login" className="nav-cta">
-          Entrar
+        <Link to={appHref} className="nav-cta">
+          {navLabel}
         </Link>
       </header>
 
@@ -135,8 +143,8 @@ export function Landing() {
             site.
           </p>
           <div className="hero-actions">
-            <Link to="/login" className="btn-primary">
-              Criar conta grátis
+            <Link to={appHref} className="btn-primary">
+              {primaryLabel}
             </Link>
             <a href="#como-funciona" className="btn-ghost">
               Ver como funciona
@@ -235,8 +243,8 @@ export function Landing() {
             <li>Resumo periódico automático via WhatsApp</li>
             <li>Relatório dinâmico sempre disponível</li>
           </ul>
-          <Link to="/login" className="btn-primary">
-            Criar conta grátis
+          <Link to={appHref} className="btn-primary">
+            {primaryLabel}
           </Link>
         </div>
       </section>
@@ -255,8 +263,8 @@ export function Landing() {
 
       <section className="cta-band">
         <h2>Pronto pra parar de ir atrás do seu próprio faturamento?</h2>
-        <Link to="/login" className="btn-inverted">
-          Criar conta grátis
+        <Link to={appHref} className="btn-inverted">
+          {primaryLabel}
         </Link>
       </section>
 

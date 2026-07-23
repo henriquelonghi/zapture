@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useSession } from './lib/useSession'
 import { apiGet } from './lib/apiClient'
 import { AppHeader } from './components/AppHeader'
@@ -13,6 +13,7 @@ import type { ClientOut } from './types/client'
 import './App.css'
 
 function App() {
+  const location = useLocation()
   const { session, loading } = useSession()
   // client fica null enquanto carrega OU enquanto não há sessão — nenhum
   // booleano de loading separado, pra não abrir uma janela de estado
@@ -40,12 +41,14 @@ function App() {
   if (!client) return <div className="page">Carregando...</div>
 
   const planActive = client.plan_status === 'active'
+  const isHome = location.pathname === '/'
 
   if (!planActive) {
     return (
       <>
-        <AppHeader showNav={false} />
+        {!isHome && <AppHeader showNav={false} />}
         <Routes>
+          <Route path="/" element={<Landing loggedIn appHref="/plano" />} />
           <Route path="/plano" element={<Plano client={client} onPlanUpdated={setClient} />} />
           <Route path="*" element={<Navigate to="/plano" replace />} />
         </Routes>
@@ -55,8 +58,9 @@ function App() {
 
   return (
     <>
-      <AppHeader />
+      {!isHome && <AppHeader />}
       <Routes>
+        <Route path="/" element={<Landing loggedIn appHref="/relatorio" />} />
         <Route path="/relatorio" element={<Report />} />
         <Route path="/conectar" element={<ConnectSource />} />
         <Route path="/configuracoes" element={<Settings />} />
