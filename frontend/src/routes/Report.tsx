@@ -20,6 +20,27 @@ function defaultRange(days: number): { start: string; end: string } {
   return { start: toIsoDate(start), end: toIsoDate(end) }
 }
 
+function isoToBr(iso: string): string {
+  const [y, m, d] = iso.split('-')
+  return y && m && d ? `${d}/${m}/${y}` : ''
+}
+
+function brToIso(br: string): string | null {
+  const match = br.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+  if (!match) return null
+  const [, d, m, y] = match
+  const day = Number(d)
+  const month = Number(m)
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null
+  return `${y}-${m}-${d}`
+}
+
+function maskBrDate(raw: string): string {
+  const digits = raw.replace(/\D/g, '').slice(0, 8)
+  const parts = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)].filter(Boolean)
+  return parts.join('/')
+}
+
 const PRESETS = [
   { label: '7 dias', days: 7 },
   { label: '30 dias', days: 30 },
@@ -28,11 +49,12 @@ const PRESETS = [
 
 export function Report() {
   const initialRange = defaultRange(30)
-  const [startDate, setStartDate] = useState(initialRange.start)
-  const [endDate, setEndDate] = useState(initialRange.end)
+  const [startText, setStartText] = useState(isoToBr(initialRange.start))
+  const [endText, setEndText] = useState(isoToBr(initialRange.end))
   const [appliedRange, setAppliedRange] = useState(initialRange)
   const [report, setReport] = useState<ReportOut | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [dateError, setDateError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -59,14 +81,34 @@ export function Report() {
 
   function applyPreset(days: number) {
     const range = defaultRange(days)
-    setStartDate(range.start)
-    setEndDate(range.end)
+    setStartText(isoToBr(range.start))
+    setEndText(isoToBr(range.end))
+    setDateError(null)
     setAppliedRange(range)
+  }
+
+  function handleStartTextChange(raw: string) {
+    setStartText(maskBrDate(raw))
+  }
+
+  function handleEndTextChange(raw: string) {
+    setEndText(maskBrDate(raw))
   }
 
   function applyCustomRange(event: FormEvent) {
     event.preventDefault()
-    setAppliedRange({ start: startDate, end: endDate })
+    const startIso = brToIso(startText)
+    const endIso = brToIso(endText)
+    if (!startIso || !endIso) {
+      setDateError('Data inválida — use o formato dd/mm/aaaa.')
+      return
+    }
+    if (startIso > endIso) {
+      setDateError('A data inicial não pode ser depois da data final.')
+      return
+    }
+    setDateError(null)
+    setAppliedRange({ start: startIso, end: endIso })
   }
 
   return (
@@ -90,14 +132,29 @@ export function Report() {
         </div>
         <label>
           De
-          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} max={endDate} />
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder="dd/mm/aaaa"
+            maxLength={10}
+            value={startText}
+            onChange={(e) => handleStartTextChange(e.target.value)}
+          />
         </label>
         <label>
           Até
-          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} min={startDate} />
+          <input
+            type="text"
+            inputMode="numeric"
+            placeholder="dd/mm/aaaa"
+            maxLength={10}
+            value={endText}
+            onChange={(e) => handleEndTextChange(e.target.value)}
+          />
         </label>
         <button type="submit">Aplicar</button>
       </form>
+      {dateError && <p className="error-text">{dateError}</p>}
 
       {loading && <p className="empty-state">Carregando relatório...</p>}
       {error && <p className="error-text">{error}</p>}
