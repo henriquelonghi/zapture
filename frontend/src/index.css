@@ -1,0 +1,57 @@
+:root {
+  --text: #3f3d45;
+  --text-h: #0f0d14;
+  --bg: #fafafa;
+  --card-bg: #fff;
+  --border: #e2e0e6;
+  --accent: #7c3aed;
+  --accent-contrast: #fff;
+  --brand-navy: #0f172a;
+  --brand-navy-700: #1e3a8a;
+  --brand-navy-100: #e8ecf1;
+  --brand-gold: #a16207;
+  --brand-gold-700: #854d06;
+  --brand-gold-100: #fbf1dd;
+  --positive: #15803d;
+  --negative: #b91c1c;
+  --warning-bg: #fff7e6;
+  --warning-text: #92620a;
+
+  font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2 {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 28px;
+  margin: 0 0 16px;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+}
