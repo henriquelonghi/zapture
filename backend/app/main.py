@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import data_sources, report
+from app.api.routes import data_sources, integrations, report
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -18,6 +18,7 @@ app.add_middleware(
 
 app.include_router(report.router)
 app.include_router(data_sources.router)
+app.include_router(integrations.router)
 
 
 @app.get("/health")

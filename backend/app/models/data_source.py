@@ -15,7 +15,13 @@ def _utcnow() -> datetime:
 
 class DataSourceType(str, Enum):
     SHEETS = "sheets"
+    """Descontinuado no pivot pra API de plataforma (descricao.md §1) — mantido
+    só pra não quebrar dado histórico já persistido, não use em código novo."""
     UPLOAD = "upload"
+    """Idem SHEETS."""
+    MERCADO_LIVRE = "mercado_livre"
+    SHOPIFY = "shopify"
+    NUVEMSHOP = "nuvemshop"
 
 
 class DataSourceConnection(Base):

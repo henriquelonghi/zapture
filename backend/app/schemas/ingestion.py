@@ -16,6 +16,10 @@ class SheetsConnectIn(BaseModel):
     range_name: str = "A1:Z10000"
 
 
+class AuthorizeUrlOut(BaseModel):
+    authorize_url: str
+
+
 class DataSourceOut(BaseModel):
     source_type: str
     last_synced_at: datetime | None

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Zapture is a SaaS that computes billing/sales insights for e-commerce sellers (Mercado Livre, Shopify, Nuvemshop) and delivers them proactively via WhatsApp, instead of a passive dashboard the seller has to check. Full product spec (target audience, phased scope, metric definitions, architecture rationale) lives in `descricao.md` — read it before making product-shape decisions (which metrics to add, what the WhatsApp summary should contain, onboarding flow, etc).
 
-**Pivot (2026-07-22, see `descricao.md` §1):** the only supported data source going forward is the official platform API (Mercado Livre, Shopify, Nuvemshop in parallel), for real-time-via-webhook data. Sheets/upload are dropped from the roadmap. The code below (`SheetsSource`, `UploadSource`, `resync_sheets_if_needed`) still reflects the pre-pivot architecture and hasn't been migrated yet — check `pendencias.md` before assuming it matches current product direction.
+**Pivot (2026-07-22, see `descricao.md` §1):** the only supported data source going forward is the official platform API (Mercado Livre, Shopify, Nuvemshop in parallel), for real-time-via-webhook data. Sheets/upload are dropped from the roadmap. `SheetsSource`/`UploadSource`/`resync_sheets_if_needed` are the pre-pivot path — still present, not wired to anything new, kept only so existing historical data/tests don't break. The platform integrations are implemented in `app/integrations/` (see below); the frontend `ConnectSource.tsx` and the "escolher método" onboarding flow described further down still reflect the pre-pivot UI and haven't been updated to point at the new OAuth endpoints yet.
 
 Golden rule from the spec: if an LLM is ever used (Fase 2 WhatsApp Q&A), it decides *which question* was asked (intent), never *the answer* (the number). Numbers always come from the deterministic engine described below.
 
@@ -74,6 +74,18 @@ Any data source implements `IngestionSource.fetch_rows() -> list[dict]` (see `Sh
 `schema_validator.validate_rows` enforces the "never let a silent error produce a fake number" rule from the spec: missing required columns (`data_pedido`, `pedido_id`, `produto`, `quantidade`, `valor_unitario`) blocks the whole ingestion; missing recommended columns (`sku`, `cliente_id`, `custo_unitario`) becomes a warning and degrades specific features (no `cliente_id` → no churn/new-customer metrics); individual bad rows are excluded one at a time, never zero out or discard the whole batch.
 
 `normalizer.normalize_and_persist` is idempotent per `pedido_id`: re-ingesting the same order replaces its items rather than duplicating them. Product matching is by SKU first, then by name; unit cost resolution order is row-level cost > previously registered `ProductCost` > unavailable (margin metrics handle `None` cost explicitly rather than assuming zero).
+
+### Platform integrations (`app/integrations/`, `app/api/routes/integrations.py`)
+
+One module per marketplace (`shopify.py`, `mercado_livre.py`, `nuvemshop.py`), each exposing the same four functions: `build_authorize_url`, `exchange_code_for_token`, a webhook signature/lookup helper, and `map_order_payload` (platform JSON → the same row-dict shape `schema_validator.validate_rows` already expects: `data_pedido`/`pedido_id`/`produto`/`sku`/`categoria`/`quantidade`/`valor_unitario`/`valor_total`/`cliente_id`/`custo_unitario`). None of them touch the DB directly — routes in `app/api/routes/integrations.py` glue them to `DataSourceConnection` and to `app/ingestion/webhook_pipeline.py::ingest_order_rows`.
+
+`oauth_state.py` signs a short-lived JWT (`internal_signing_secret`, separate from Supabase's) carrying `client_id` + platform name, passed as the OAuth `state` param — the callback is a bare browser redirect from the platform with no bearer token, so this is how we know which client is connecting. `webhook_pipeline.ingest_order_rows` is a copy of `pipeline.run_ingestion` minus the `data_source.config` overwrite: webhook events must never clobber the `config` dict, since that's where the OAuth `access_token` lives for that connection.
+
+Two real asymmetries between platforms, both load-bearing for how the webhook handlers are written:
+- **Shopify** sends the full order (line items included) in the webhook payload itself — `map_order_payload` works directly off it. **Mercado Livre and Nuvemshop** webhooks are assumed to only notify "something changed" (an id/resource path); the handler does a follow-up authenticated `fetch_order` call before mapping. This is documented as unverified for Nuvemshop specifically (see inline comment in `nuvemshop.py`) — confirm against current docs before relying on it in production.
+- **Cost/COGS never arrives via any of the three APIs in practice** (Mercado Livre has no cost field at all; Shopify/Nuvemshop have one but only if the merchant filled it in on their side) — `custo_unitario` is always `None` from these mappers today. Margin still depends on the manual cost UI that doesn't exist yet (see `pendencias.md`).
+
+Connection lookup for an incoming webhook (`_find_connection_by_config` in the routes module) filters `DataSourceConnection` rows in Python rather than querying into the JSON `config` column — deliberate, to stay portable between Postgres (prod) and SQLite (tests) without DB-specific JSON operators; fine at current expected connection volume, revisit if it ever shows up in profiling.
 
 ### Auth and multi-tenancy
 
