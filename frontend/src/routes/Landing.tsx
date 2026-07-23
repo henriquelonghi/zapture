@@ -3,6 +3,7 @@ import { Logo } from '../components/Logo'
 import { WhatsAppMockup } from '../components/WhatsAppMockup'
 import { FeatureCard } from '../components/FeatureCard'
 import { ReportPreview } from '../components/ReportPreview'
+import { BandInsightsDecor, HeroInsightsDecor } from '../components/InsightsDecor'
 import mercadoLivreLogo from '../assets/logos/mercado-livre.svg'
 import shopifyLogo from '../assets/logos/shopify.svg'
 import nuvemshopLogo from '../assets/logos/nuvemshop.png'
@@ -132,6 +133,7 @@ export function Landing({ loggedIn = false, appHref = '/login' }: LandingProps) 
       <section className="hero">
         <div className="hero-glow hero-glow-a" aria-hidden="true" />
         <div className="hero-glow hero-glow-b" aria-hidden="true" />
+        <HeroInsightsDecor />
         <div className="hero-content">
           <span className="eyebrow">🔥 O diferencial: você não abre nada, a gente te chama</span>
           <h1>Seu faturamento te manda mensagem antes de você ir atrás dele</h1>
@@ -262,6 +264,7 @@ export function Landing({ loggedIn = false, appHref = '/login' }: LandingProps) 
       </section>
 
       <section className="cta-band">
+        <BandInsightsDecor />
         <h2>Pronto pra parar de ir atrás do seu próprio faturamento?</h2>
         <Link to={appHref} className="btn-inverted">
           {primaryLabel}
