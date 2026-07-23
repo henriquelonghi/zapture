@@ -65,15 +65,17 @@
   opacity: 0.6;
 }
 
-.platform-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  font-weight: 700;
-  color: var(--text-h);
+.platform-logo {
+  height: 22px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.55);
+  transition: filter 0.15s ease;
+}
+
+.platform-logo:hover {
+  filter: grayscale(0) opacity(1);
 }
 
 /* hero */

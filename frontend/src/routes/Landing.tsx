@@ -3,6 +3,9 @@ import { Logo } from '../components/Logo'
 import { WhatsAppMockup } from '../components/WhatsAppMockup'
 import { FeatureCard } from '../components/FeatureCard'
 import { ReportPreview } from '../components/ReportPreview'
+import mercadoLivreLogo from '../assets/logos/mercado-livre.svg'
+import shopifyLogo from '../assets/logos/shopify.svg'
+import nuvemshopLogo from '../assets/logos/nuvemshop.png'
 import '../landing.css'
 
 const FEATURES = [
@@ -48,7 +51,11 @@ const FEATURES = [
   },
 ]
 
-const PLATFORMS = ['Mercado Livre', 'Shopify', 'Nuvemshop']
+const PLATFORMS = [
+  { name: 'Mercado Livre', logo: mercadoLivreLogo },
+  { name: 'Shopify', logo: shopifyLogo },
+  { name: 'Nuvemshop', logo: nuvemshopLogo },
+]
 
 const STEPS = [
   {
@@ -78,9 +85,7 @@ export function Landing() {
       <div className="platform-strip">
         <span className="platform-strip-label">Conecta direto com:</span>
         {PLATFORMS.map((platform) => (
-          <span className="platform-badge" key={platform}>
-            {platform}
-          </span>
+          <img className="platform-logo" key={platform.name} src={platform.logo} alt={platform.name} />
         ))}
       </div>
 
