@@ -61,10 +61,12 @@ ainda falta pra isso funcionar com cliente real:
   Developers, gerar `WHATSAPP_API_TOKEN` e `WHATSAPP_PHONE_NUMBER_ID`, colocar
   em `backend/.env`. Sem isso o resumo periódico não sai de verdade (o job só
   loga a falha e segue).
-- [ ] **Supabase (backend)** — `frontend/.env` já tem `VITE_SUPABASE_URL` e
-  `VITE_SUPABASE_ANON_KEY`; falta confirmar se `backend/.env` tem
-  `SUPABASE_JWT_SECRET` (obrigatório pra validar login) e
-  `SUPABASE_SERVICE_ROLE_KEY` (usado pro Storage do upload original).
+- [x] ~~Supabase (backend)~~ — resolvido. `backend/.env` e `frontend/.env`
+  preenchidos com URL/anon/service_role de um projeto real. O projeto usa o
+  esquema novo de chave assimétrica (ES256), não o secret HS256 antigo —
+  `security.py` foi ajustado pra suportar os dois (ver commit "Fix Supabase
+  JWT verification"). Testado de ponta a ponta com conta real (cadastro,
+  confirmação de e-mail, login, `/report` autenticado).
 - [ ] **Banco de produção** — hoje local é SQLite (`dev.db`); decidir quando
   provisionar o Postgres apontado em `DATABASE_URL`.
 - [ ] **Agendador do resumo diário** — nenhum scheduler está rodando ainda.
