@@ -57,6 +57,14 @@ Insight scoring (`app/engine/insights/rules.py`) is deliberately explicit and re
 
 The `/report` endpoint (`app/api/routes/report.py`) recalculates from scratch on every call — that's what "dynamic report" means in this codebase, not that data arrives by itself. If the client's connected source is Google Sheets, `resync_sheets_if_needed` re-fetches before calculating, which is what makes Sheets "live" vs. an upload (which only updates on manual re-upload).
 
+### WhatsApp periodic summary (`app/notifications/`)
+
+The second output channel from the spec's single-engine architecture. `summary_job.py::send_periodic_summaries` is the orchestrator: for every `Client` with `whatsapp_phone` set, it resyncs the source, calls the same `generate_report` the dynamic report uses, formats the result (`summary_formatter.py::format_summary_message`), and sends it (`whatsapp_client.py::send_whatsapp_message`, WhatsApp Cloud API). No metric or insight logic is duplicated here — this module only formats and delivers what the engine already computed.
+
+There's no in-process scheduler yet; `scripts/send_whatsapp_summaries.py` is the entry point meant to be invoked once a day by an external scheduler (cron / Windows Task Scheduler / cloud scheduler), same spirit as `scripts/init_db.py`. Needs `WHATSAPP_API_TOKEN` + `WHATSAPP_PHONE_NUMBER_ID` in `.env` (Meta Cloud API); without them `send_whatsapp_message` just returns `False` per client and the job logs the failure instead of crashing — same graceful-degradation pattern as `supabase_client.py` and Google Sheets ingestion.
+
+The formatted message always ends with the same freshness disclosure the report shows via `LastSyncedBadge` (`dado de: <fonte>, sincronizado em <timestamp>`) — the spec is explicit that "dynamic" means the engine recalculates on open, not that the data itself is live, and the WhatsApp message needs to carry that same caveat since it's pushed proactively rather than opened on demand.
+
 ### Ingestion is source-agnostic by design
 
 Any data source implements `IngestionSource.fetch_rows() -> list[dict]` (see `SheetsSource`, `UploadSource`). `app/ingestion/pipeline.py::run_ingestion` is the one path both the upload endpoint and the Sheets resync go through: fetch → `schema_validator.validate_rows` → `normalizer.normalize_and_persist` → update `DataSourceConnection` sync metadata. Adding a new source (e.g. a marketplace API in Fase 2) means implementing `IngestionSource`, not touching the pipeline.

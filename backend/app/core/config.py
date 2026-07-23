@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     supabase_jwt_secret: str | None = None
     google_service_account_json: str | None = None
     frontend_origin: str = "http://localhost:5173"
+    whatsapp_api_token: str | None = None
+    whatsapp_phone_number_id: str | None = None
+    whatsapp_api_base_url: str = "https://graph.facebook.com/v20.0"
 
 
 @lru_cache
