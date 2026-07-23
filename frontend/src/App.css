@@ -230,8 +230,9 @@ button {
 }
 
 .metric-value {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-h);
 }
 

@@ -8,19 +8,29 @@ type LogoProps = {
 }
 
 export function Logo({ size = 28, withWordmark = true, badge = false, className }: LogoProps) {
+  const barWidth = Math.max(2, Math.round(size * 0.095))
+  const gap = Math.max(1, Math.round(size * 0.08))
+  const barHeights = [0.21, 0.34, 0.46].map((factor) => Math.round(size * factor))
+  const outerRadius = Math.round(size * 0.31)
+  const cornerRadius = Math.max(2, Math.round(size * 0.09))
+
   const mark = (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="zapture-mark-gradient" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="var(--brand-navy-700)" />
-          <stop offset="1" stopColor="var(--brand-navy)" />
-        </linearGradient>
-      </defs>
-      <path
-        d="M13.2 2.2c.35-.44 1.05-.19 1.05.36v5.53c0 .64.51 1.16 1.14 1.16h4.9c.48 0 .76.55.46.93l-6.9 8.66c-.35.44-1.05.2-1.05-.35v-5.53c0-.64-.5-1.16-1.13-1.16H6.75c-.48 0-.76-.54-.46-.93z"
-        fill="url(#zapture-mark-gradient)"
-      />
-    </svg>
+    <span
+      aria-hidden="true"
+      className="logo-mark"
+      style={{
+        width: size,
+        height: size,
+        borderRadius: `${outerRadius}px ${outerRadius}px ${outerRadius}px ${cornerRadius}px`,
+        background: 'var(--zapture-gradient)',
+        paddingBottom: Math.round(size * 0.18),
+        gap,
+      }}
+    >
+      {barHeights.map((height, index) => (
+        <span key={index} className="logo-mark-bar" style={{ width: barWidth, height }} />
+      ))}
+    </span>
   )
 
   return (

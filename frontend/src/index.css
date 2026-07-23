@@ -1,23 +1,33 @@
 :root {
-  --text: #3f3d45;
-  --text-h: #0f0d14;
-  --bg: #fafafa;
-  --card-bg: #fff;
-  --border: #e2e0e6;
-  --accent: #7c3aed;
-  --accent-contrast: #fff;
-  --brand-navy: #0f172a;
-  --brand-navy-700: #1e3a8a;
-  --brand-navy-100: #e8ecf1;
-  --brand-gold: #a16207;
-  --brand-gold-700: #854d06;
-  --brand-gold-100: #fbf1dd;
-  --positive: #15803d;
-  --negative: #b91c1c;
-  --warning-bg: #fff7e6;
-  --warning-text: #92620a;
+  /* Zapture visual identity — see "Identidade visual Zapture.zip" */
+  --ink: oklch(0.16 0.01 260);
+  --text-h: var(--ink);
+  --text: oklch(0.32 0.01 260);
+  --text-muted: oklch(0.55 0.01 260);
 
-  font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
+  --paper: oklch(0.99 0.003 90);
+  --mist: oklch(0.96 0.005 260);
+  --bg: var(--paper);
+  --card-bg: #fff;
+  --border: oklch(0.9 0.005 260);
+
+  --zapture-green: oklch(0.68 0.25 165);
+  --zapture-green-dark: oklch(0.52 0.25 165);
+  --zapture-green-100: oklch(0.94 0.05 165);
+  --zapture-blue: oklch(0.62 0.27 250);
+  --zapture-gradient: linear-gradient(135deg, oklch(0.72 0.24 175), oklch(0.62 0.27 250));
+
+  --accent: var(--zapture-green);
+  --accent-dark: var(--zapture-green-dark);
+  --accent-100: var(--zapture-green-100);
+  --accent-contrast: #fff;
+
+  --positive: oklch(0.52 0.16 155);
+  --negative: oklch(0.55 0.2 25);
+  --warning-bg: oklch(0.97 0.05 85);
+  --warning-text: oklch(0.45 0.11 70);
+
+  font: 16px/1.5 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
@@ -32,9 +42,12 @@ body {
 }
 
 h1,
-h2 {
+h2,
+h3 {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   color: var(--text-h);
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h1 {

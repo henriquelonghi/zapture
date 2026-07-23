@@ -1,6 +1,6 @@
 .landing {
   overflow-x: hidden;
-  font-family: 'IBM Plex Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* logo */
@@ -8,7 +8,19 @@
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.logo-mark {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-mark-bar {
+  background: #fff;
+  border-radius: 2px;
 }
 
 .logo-badge {
@@ -17,11 +29,12 @@
   justify-content: center;
   padding: 6px;
   border-radius: 8px;
-  background: var(--brand-navy-100);
+  background: var(--mist);
 }
 
 .logo-wordmark {
-  font-weight: 800;
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-h);
 }
@@ -104,14 +117,14 @@
 .hero-glow-a {
   top: -160px;
   left: -160px;
-  background: radial-gradient(circle, var(--brand-navy) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--ink) 0%, transparent 70%);
   opacity: 0.14;
 }
 
 .hero-glow-b {
   bottom: -200px;
   right: -160px;
-  background: radial-gradient(circle, var(--brand-gold) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
   opacity: 0.16;
 }
 
@@ -125,8 +138,8 @@
   display: inline-block;
   font-size: 13px;
   font-weight: 600;
-  color: var(--brand-gold-700);
-  background: var(--brand-gold-100);
+  color: var(--accent-dark);
+  background: var(--accent-100);
   padding: 4px 10px;
   border-radius: 999px;
   margin-bottom: 16px;
@@ -174,32 +187,32 @@
 }
 
 .btn-primary {
-  background: var(--brand-gold);
+  background: var(--accent);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--brand-gold-700);
+  background: var(--accent-dark);
 }
 
 .btn-ghost {
-  color: var(--brand-navy);
+  color: var(--ink);
   border-color: var(--border);
   background: var(--card-bg);
 }
 
 .btn-ghost:hover {
-  border-color: var(--brand-navy);
-  background: var(--brand-navy-100);
+  border-color: var(--ink);
+  background: var(--mist);
 }
 
 .btn-inverted {
   background: #fff;
-  color: var(--brand-gold-700);
+  color: var(--accent-dark);
 }
 
 .btn-inverted:hover {
-  background: var(--brand-gold-100);
+  background: var(--accent-100);
 }
 
 /* whatsapp mockup */
@@ -249,7 +262,7 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--brand-navy-100);
+  background: var(--mist);
 }
 
 .wa-header-text {
@@ -353,8 +366,8 @@
 }
 
 .channel-card-primary {
-  border-color: var(--brand-navy);
-  background: linear-gradient(160deg, var(--brand-navy-100), var(--card-bg) 60%);
+  border-color: var(--ink);
+  background: linear-gradient(160deg, var(--mist), var(--card-bg) 60%);
   box-shadow: 0 12px 32px -18px rgb(15 23 42 / 0.35);
 }
 
@@ -365,14 +378,14 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--brand-navy);
-  background: var(--brand-navy-100);
+  color: var(--ink);
+  background: var(--mist);
   padding: 3px 10px;
   border-radius: 999px;
 }
 
 .channel-card-primary .channel-tag {
-  background: var(--brand-navy);
+  background: var(--ink);
   color: #fff;
 }
 
@@ -407,7 +420,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 14px;
-  background: var(--brand-navy-100);
+  background: var(--mist);
   border-bottom: 1px solid var(--border);
 }
 
@@ -471,6 +484,7 @@
 }
 
 .report-preview-value {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   font-size: 20px;
   font-weight: 700;
   color: var(--text-h);
@@ -577,7 +591,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--brand-navy);
+  background: var(--ink);
   color: #fff;
   font-weight: 700;
   margin-bottom: 12px;
@@ -610,8 +624,8 @@
 }
 
 .comparison-card-highlight {
-  border-color: var(--brand-navy);
-  background: var(--brand-navy-100);
+  border-color: var(--ink);
+  background: var(--mist);
 }
 
 .comparison-card h3 {
@@ -670,6 +684,8 @@
 }
 
 .pricing-value strong {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
   color: var(--text-h);
   font-size: 28px;
 }
@@ -686,7 +702,7 @@
 }
 
 .cta-band {
-  background: linear-gradient(135deg, var(--brand-navy), var(--brand-navy-700));
+  background: linear-gradient(135deg, var(--ink), oklch(0.24 0.05 255));
   color: #fff;
   text-align: center;
   padding: 64px 24px;
