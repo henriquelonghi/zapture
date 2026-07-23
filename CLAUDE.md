@@ -10,6 +10,10 @@ Golden rule from the spec: if an LLM is ever used (Fase 2 WhatsApp Q&A), it deci
 
 Repo is a monorepo: `backend/` (FastAPI) + `frontend/` (Vite/React), each with its own dependency tree and no shared package.
 
+## GitHub sync
+
+Remote: `https://github.com/henriquelonghi/zapture` (private), branch `main`. After any change to the codebase, commit and push to `origin/main` so the remote stays current — don't let local work sit uncommitted across sessions. Use descriptive commit messages per change (or logical group of changes); don't batch unrelated work into one commit.
+
 ## Commands
 
 ### Backend (`backend/`)
