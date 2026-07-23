@@ -74,7 +74,11 @@ export function Report() {
     <div className="page">
       <div className="page-header">
         <h1>Relatório</h1>
-        <Link to="/conectar">Gerenciar fontes de dados</Link>
+        <div>
+          <Link to="/configuracoes">Configurações</Link>
+          {' · '}
+          <Link to="/conectar">Gerenciar fontes de dados</Link>
+        </div>
       </div>
 
       <form className="date-filter" onSubmit={applyCustomRange}>

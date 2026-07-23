@@ -4,6 +4,7 @@ import { Landing } from './routes/Landing'
 import { Login } from './routes/Login'
 import { ConnectSource } from './routes/ConnectSource'
 import { Report } from './routes/Report'
+import { Settings } from './routes/Settings'
 import './App.css'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
     <Routes>
       <Route path="/relatorio" element={<Report />} />
       <Route path="/conectar" element={<ConnectSource />} />
+      <Route path="/configuracoes" element={<Settings />} />
       <Route path="*" element={<Navigate to="/relatorio" replace />} />
     </Routes>
   )

@@ -35,6 +35,26 @@ export async function apiPostJson<T>(path: string, body: unknown): Promise<T> {
   return response.json() as Promise<T>
 }
 
+export async function apiPatchJson<T>(path: string, body: unknown): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: 'PATCH',
+    headers: { ...(await authHeader()), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!response.ok) throw new Error(await extractErrorMessage(response))
+  return response.json() as Promise<T>
+}
+
+export async function apiPutJson<T>(path: string, body: unknown): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: 'PUT',
+    headers: { ...(await authHeader()), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  if (!response.ok) throw new Error(await extractErrorMessage(response))
+  return response.json() as Promise<T>
+}
+
 export async function apiPostFile<T>(path: string, file: File): Promise<T> {
   const formData = new FormData()
   formData.append('file', file)

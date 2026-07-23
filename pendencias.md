@@ -67,11 +67,14 @@ ainda falta pra isso funcionar com cliente real:
 
 ## Gaps de produto sem UI/endpoint ainda
 
-- [ ] Não existe tela nem endpoint pra o cliente cadastrar o próprio número de
-  WhatsApp — `Client.whatsapp_phone` só existe no banco por enquanto.
-- [ ] Não existe UI de cadastro de custo/COGS por produto (sem isso, margem
-  fica sempre indisponível). Citado no `descricao.md` (seção 6) como algo "a
-  decidir/desenhar em seguida" — ainda não desenhado.
+- [x] ~~Tela/endpoint pra cadastrar o telefone de WhatsApp~~ — `GET/PATCH /me`
+  + página `/configuracoes` no frontend (`Settings.tsx`).
+- [x] ~~UI de cadastro de custo/COGS por produto~~ — `GET /products` +
+  `PUT /products/{id}/cost`, mesma página `/configuracoes`. Testado via
+  pytest (`tests/api/test_clients_route.py`, `tests/api/test_products_route.py`)
+  e build do frontend; **não testado em navegador com login real** — o
+  backend não tem `SUPABASE_JWT_SECRET` configurado localmente (ver item
+  abaixo), então o fluxo autenticado de ponta a ponta ainda depende disso.
 - [ ] Sem migrations (Alembic está instalado mas não usado) — mudança de
   schema exige recriar o banco via `scripts/init_db.py`
   (`create_all` não altera tabela existente). Ex: o `whatsapp_phone`
