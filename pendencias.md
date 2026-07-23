@@ -34,13 +34,16 @@ ainda falta pra isso funcionar com cliente real:
 - [ ] Decidir se `SheetsSource`/`UploadSource` são removidos do código ou só
   deixados pra trás sem uso — `descricao.md` §4 já tira os dois do roadmap
   oficial, mas o código ainda existe (ver nota em `CLAUDE.md`).
-- [ ] Resolver uso de marca/logo por plataforma antes de colocar qualquer logo
-  na landing — Shopify tem brand kit público com regras estritas; Mercado
-  Livre exige autorização por escrito; Nuvemshop ainda não verificado. Usar
-  nome em texto até resolver oficialmente.
-- [ ] Reescrever a landing page com a mensagem de "tempo real de verdade" —
-  agora que a integração existe no backend, dá pra fazer isso sem prometer o
-  que não existe.
+- [x] ~~Reescrever a landing page com a mensagem de "tempo real de verdade"~~
+  — feito: hero, steps, comparação e preço mencionam as três plataformas em
+  **texto** (não logo, por causa da restrição de marca abaixo), tira menção a
+  Sheets/upload. Verificado renderizando no navegador (Playwright), sem erro
+  de console. Ainda não testado com login real / dados reais (só a rota
+  pública `/`).
+- [ ] Uso de logo de verdade das plataformas segue bloqueado — Shopify tem
+  brand kit público com regras estritas; Mercado Livre exige autorização por
+  escrito; Nuvemshop ainda não verificado. A landing usa só nome em texto por
+  enquanto, o que é seguro sem autorização nenhuma.
 - [ ] Refazer `ConnectSource.tsx`: hoje ainda mostra a tela de "escolher
   método de importação" (Sheets/upload); precisa virar "escolher plataforma"
   chamando `GET /integrations/{platform}/authorize` e redirecionando o

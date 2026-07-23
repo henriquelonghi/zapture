@@ -23,7 +23,7 @@ export function ReportPreview() {
       <div className="report-preview-body">
         <div className="report-preview-header">
           <h3>Relatório de faturamento</h3>
-          <span className="report-preview-sync">Atualizado agora · Google Sheets</span>
+          <span className="report-preview-sync">Atualizado agora · Mercado Livre (tempo real)</span>
         </div>
 
         <div className="report-preview-metrics">

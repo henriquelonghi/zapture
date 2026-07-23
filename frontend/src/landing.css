@@ -46,6 +46,36 @@
   font-weight: 600;
 }
 
+/* platform strip */
+
+.platform-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 20px;
+  font-size: 13px;
+}
+
+.platform-strip-label {
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-weight: 700;
+  color: var(--text-h);
+}
+
 /* hero */
 
 .hero {

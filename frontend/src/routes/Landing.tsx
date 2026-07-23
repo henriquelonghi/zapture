@@ -48,14 +48,16 @@ const FEATURES = [
   },
 ]
 
+const PLATFORMS = ['Mercado Livre', 'Shopify', 'Nuvemshop']
+
 const STEPS = [
   {
-    title: 'Conecte sua loja',
-    description: 'Google Sheets, upload de CSV/XLSX, ou integração direta com o marketplace.',
+    title: 'Autorize o acesso à sua conta',
+    description: 'Mercado Livre, Shopify ou Nuvemshop — nada de planilha, nada de upload manual. Só a conta oficial da sua loja.',
   },
   {
-    title: 'A gente calcula',
-    description: 'O motor valida os dados, calcula as métricas e prioriza os 2-3 insights mais relevantes.',
+    title: 'A gente calcula em tempo real',
+    description: 'Cada venda chega sozinha assim que acontece. O motor valida os dados, calcula as métricas e prioriza os 2-3 insights mais relevantes.',
   },
   {
     title: 'Você recebe no WhatsApp',
@@ -73,6 +75,15 @@ export function Landing() {
         </Link>
       </header>
 
+      <div className="platform-strip">
+        <span className="platform-strip-label">Conecta direto com:</span>
+        {PLATFORMS.map((platform) => (
+          <span className="platform-badge" key={platform}>
+            {platform}
+          </span>
+        ))}
+      </div>
+
       <section className="hero">
         <div className="hero-glow hero-glow-a" aria-hidden="true" />
         <div className="hero-glow hero-glow-b" aria-hidden="true" />
@@ -81,8 +92,10 @@ export function Landing() {
           <h1>Seu faturamento te manda mensagem antes de você ir atrás dele</h1>
           <p className="hero-subhead">
             Enquanto ferramentas tradicionais te dão só um painel pra consultar, a Zapture manda o que importa direto
-            no seu WhatsApp, sozinha, sem você precisar entrar em lugar nenhum. E se quiser se aprofundar, o
-            relatório completo também fica disponível pra consulta no site.
+            no seu WhatsApp, sozinha, sem você precisar entrar em lugar nenhum. Conectando direto com a sua conta
+            oficial (Mercado Livre, Shopify ou Nuvemshop), o dado chega em tempo real — nada de planilha
+            desatualizada. E se quiser se aprofundar, o relatório completo também fica disponível pra consulta no
+            site.
           </p>
           <div className="hero-actions">
             <Link to="/login" className="btn-primary">
@@ -165,6 +178,7 @@ export function Landing() {
             <h3>Zapture</h3>
             <ul>
               <li>Entrega proativa: o resumo chega até você, no WhatsApp, sem precisar abrir nada</li>
+              <li>Direto da API oficial da sua loja, em tempo real — sem planilha, sem upload</li>
               <li>Preço público e simples</li>
               <li>Quer se aprofundar? Relatório dinâmico completo também disponível no site</li>
             </ul>
@@ -179,7 +193,8 @@ export function Landing() {
             A partir de <strong>R$ 47/mês</strong>
           </p>
           <ul>
-            <li>Conecte quantas fontes de dado precisar</li>
+            <li>Conecte sua conta do Mercado Livre, Shopify ou Nuvemshop</li>
+            <li>Dados em tempo real, direto da API oficial</li>
             <li>Resumo periódico automático via WhatsApp</li>
             <li>Relatório dinâmico sempre disponível</li>
           </ul>
