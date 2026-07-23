@@ -1,13 +1,31 @@
 import { useState } from 'react'
 import { apiGet } from '../lib/apiClient'
 import type { AuthorizeUrlOut } from '../types/integrations'
+import mercadoLivreLogo from '../assets/logos/mercado-livre.svg'
+import shopifyLogo from '../assets/logos/shopify.svg'
+import nuvemshopLogo from '../assets/logos/nuvemshop.png'
 
 type Platform = 'mercado_livre' | 'shopify' | 'nuvemshop'
 
-const PLATFORMS: { id: Platform; name: string; description: string }[] = [
-  { id: 'mercado_livre', name: 'Mercado Livre', description: 'Autorize o acesso oficial à sua conta de vendedor.' },
-  { id: 'shopify', name: 'Shopify', description: 'Informe o domínio da sua loja e autorize o app.' },
-  { id: 'nuvemshop', name: 'Nuvemshop', description: 'Autorize o acesso oficial à sua loja.' },
+const PLATFORMS: { id: Platform; name: string; description: string; logo: string }[] = [
+  {
+    id: 'mercado_livre',
+    name: 'Mercado Livre',
+    description: 'Autorize o acesso oficial à sua conta de vendedor.',
+    logo: mercadoLivreLogo,
+  },
+  {
+    id: 'shopify',
+    name: 'Shopify',
+    description: 'Informe o domínio da sua loja e autorize o app.',
+    logo: shopifyLogo,
+  },
+  {
+    id: 'nuvemshop',
+    name: 'Nuvemshop',
+    description: 'Autorize o acesso oficial à sua loja.',
+    logo: nuvemshopLogo,
+  },
 ]
 
 export function ConnectSource() {
@@ -42,7 +60,7 @@ export function ConnectSource() {
       <div className="method-grid">
         {PLATFORMS.map((platform) => (
           <div className="method-card" key={platform.id} style={{ cursor: 'default' }}>
-            <strong>{platform.name}</strong>
+            <img src={platform.logo} alt={platform.name} className="method-card-logo" />
             <p>{platform.description}</p>
 
             {platform.id === 'shopify' && (
@@ -53,7 +71,11 @@ export function ConnectSource() {
               />
             )}
 
-            <button onClick={() => connect(platform.id)} disabled={loadingPlatform !== null}>
+            <button
+              className="btn-accent"
+              onClick={() => connect(platform.id)}
+              disabled={loadingPlatform !== null}
+            >
               {loadingPlatform === platform.id ? 'Redirecionando...' : `Conectar ${platform.name}`}
             </button>
           </div>

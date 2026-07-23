@@ -669,6 +669,8 @@
 }
 
 .pricing-card {
+  position: relative;
+  overflow: hidden;
   max-width: 360px;
   margin: 32px auto 0;
   text-align: center;
@@ -676,6 +678,17 @@
   border-radius: 12px;
   padding: 32px 24px;
   background: var(--card-bg);
+  box-shadow: 0 24px 48px -28px rgb(15 23 42 / 0.25);
+}
+
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--zapture-gradient);
 }
 
 .pricing-value {

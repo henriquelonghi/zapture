@@ -75,7 +75,7 @@ export function Settings() {
             Telefone (formato internacional, só dígitos)
             <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="5511999998888" />
           </label>
-          <button type="submit" disabled={phoneSaving}>
+          <button type="submit" className="btn-accent" disabled={phoneSaving}>
             {phoneSaving ? 'Salvando...' : 'Salvar'}
           </button>
           {phoneSaved && <span className="positive">Salvo!</span>}
@@ -119,7 +119,11 @@ export function Settings() {
                     />
                   </td>
                   <td>
-                    <button onClick={() => saveCost(product)} disabled={savingProductId === product.id}>
+                    <button
+                      className="btn-accent"
+                      onClick={() => saveCost(product)}
+                      disabled={savingProductId === product.id}
+                    >
                       {savingProductId === product.id ? 'Salvando...' : 'Salvar'}
                     </button>
                   </td>

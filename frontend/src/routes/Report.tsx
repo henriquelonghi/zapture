@@ -152,11 +152,19 @@ export function Report() {
             onChange={(e) => handleEndTextChange(e.target.value)}
           />
         </label>
-        <button type="submit">Aplicar</button>
+        <button type="submit" className="btn-accent">
+          Aplicar
+        </button>
       </form>
       {dateError && <p className="error-text">{dateError}</p>}
 
-      {loading && <p className="empty-state">Carregando relatório...</p>}
+      {loading && (
+        <div className="skeleton-grid" aria-label="Carregando relatório" role="status">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div className="skeleton-card" key={i} />
+          ))}
+        </div>
+      )}
       {error && <p className="error-text">{error}</p>}
 
       {report && (

@@ -80,7 +80,9 @@ export function Plano({ client, onPlanUpdated }: PlanoProps) {
       {isActive && (
         <div className="method-form">
           <p>Plano ativo. Agora é só conectar sua loja.</p>
-          <button onClick={() => navigate('/conectar')}>Conectar fonte de dados</button>
+          <button className="btn-accent" onClick={() => navigate('/conectar')}>
+            Conectar fonte de dados
+          </button>
         </div>
       )}
 
@@ -100,7 +102,7 @@ export function Plano({ client, onPlanUpdated }: PlanoProps) {
                 <li>Resumo periódico automático via WhatsApp</li>
                 <li>Relatório dinâmico sempre disponível</li>
               </ul>
-              <button onClick={handleSubscribe} disabled={checkoutLoading}>
+              <button className="btn-accent" onClick={handleSubscribe} disabled={checkoutLoading}>
                 {checkoutLoading ? 'Redirecionando...' : 'Assinar'}
               </button>
             </div>
