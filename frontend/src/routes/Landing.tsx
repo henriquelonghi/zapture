@@ -30,6 +30,16 @@ const FEATURES = [
     description: 'Quantidade total vendida no período e sua variação, volume de verdade, não só o valor em reais.',
   },
   {
+    icon: '🏆',
+    title: 'Produto mais vendido',
+    description: 'Quem vendeu mais unidades no período, não necessariamente quem faturou mais.',
+  },
+  {
+    icon: '💎',
+    title: 'Venda de maior preço',
+    description: 'O item de maior valor unitário vendido no período, pra você saber onde mora o seu ticket mais alto.',
+  },
+  {
     icon: '📈',
     title: 'Ranking de produtos e categorias',
     description: 'Quais categorias e produtos subiram ou caíram, ordenados pelo que mais mudou.',
@@ -55,6 +65,28 @@ const PLATFORMS = [
   { name: 'Mercado Livre', logo: mercadoLivreLogo },
   { name: 'Shopify', logo: shopifyLogo },
   { name: 'Nuvemshop', logo: nuvemshopLogo },
+]
+
+const FAQS = [
+  {
+    question: 'Quais plataformas são suportadas?',
+    answer: 'Mercado Livre, Shopify e Nuvemshop, via integração oficial com a API de cada uma.',
+  },
+  {
+    question: 'Vocês têm acesso à minha senha?',
+    answer:
+      'Não. A conexão é feita por OAuth oficial de cada plataforma — você autoriza o acesso e pode revogar quando quiser, direto no painel da sua conta.',
+  },
+  {
+    question: 'Preciso cadastrar o custo dos meus produtos?',
+    answer:
+      'Só se quiser ver margem e lucro por produto. Sem isso, as outras métricas (faturamento, ticket médio, ranking, produto mais vendido etc.) funcionam normalmente.',
+  },
+  {
+    question: 'Quantos resumos eu recebo no WhatsApp?',
+    answer:
+      'Um resumo periódico automático, sempre com os 2-3 insights mais relevantes do período — não uma lista enorme de números. O relatório completo fica sempre disponível pra consulta no site.',
+  },
 ]
 
 const STEPS = [
@@ -206,6 +238,18 @@ export function Landing() {
           <Link to="/login" className="btn-primary">
             Criar conta grátis
           </Link>
+        </div>
+      </section>
+
+      <section className="section" id="faq">
+        <h2 className="section-title">Perguntas frequentes</h2>
+        <div className="faq-grid">
+          {FAQS.map((faq) => (
+            <div className="faq-item" key={faq.question}>
+              <h3>{faq.question}</h3>
+              <p>{faq.answer}</p>
+            </div>
+          ))}
         </div>
       </section>
 

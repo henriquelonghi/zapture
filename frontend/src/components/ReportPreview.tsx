@@ -1,8 +1,18 @@
-const METRICS = [
+type Metric = {
+  label: string
+  value: string
+  variation?: string
+  positive?: boolean
+}
+
+const METRICS: Metric[] = [
   { label: 'Faturamento', value: 'R$ 4.280', variation: '+12%', positive: true },
   { label: 'Ticket médio', value: 'R$ 101,90', variation: '+4%', positive: true },
   { label: 'Pedidos', value: '42', variation: '-3%', positive: false },
   { label: 'Unidades vendidas', value: '58', variation: '+7%', positive: true },
+  { label: 'Margem agregada', value: '34,2%' },
+  { label: 'Produto mais vendido', value: 'Capa de celular (14 un.)' },
+  { label: 'Venda de maior preço', value: 'Fone XYZ — R$ 249,90' },
 ]
 
 const RANKING = [
@@ -31,9 +41,16 @@ export function ReportPreview() {
             <div className="report-preview-metric" key={metric.label}>
               <span className="report-preview-label">{metric.label}</span>
               <span className="report-preview-value">{metric.value}</span>
-              <span className={metric.positive ? 'positive' : 'negative'}>{metric.variation}</span>
+              {metric.variation && (
+                <span className={metric.positive ? 'positive' : 'negative'}>{metric.variation}</span>
+              )}
             </div>
           ))}
+        </div>
+
+        <div className="report-preview-alerts">
+          <span>⚠️ Fone XYZ está com margem negativa</span>
+          <span>👋 3 clientes sumiram</span>
         </div>
 
         <table className="report-preview-table">
