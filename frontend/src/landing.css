@@ -702,18 +702,10 @@
 }
 
 .cta-band {
-  position: relative;
-  overflow: hidden;
   background: linear-gradient(135deg, var(--ink), oklch(0.24 0.05 255));
   color: #fff;
   text-align: center;
   padding: 64px 24px;
-}
-
-.cta-band h2,
-.cta-band .btn-inverted {
-  position: relative;
-  z-index: 1;
 }
 
 .cta-band h2 {
@@ -723,201 +715,70 @@
   margin: 0 auto 24px;
 }
 
-/* decorative insight widgets */
+/* decorative insight backdrop — large abstract chart shapes behind the whole page */
 
-.decor-layer {
-  position: absolute;
+.decor-backdrop {
+  position: fixed;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
-.decor-card {
+.decor-backdrop-svg {
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: max-content;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgb(255 255 255 / 0.85);
-  border: 1px solid var(--border);
-  box-shadow: 0 16px 32px -18px rgb(15 23 42 / 0.3);
-  font-size: 11px;
-  color: var(--text);
-  opacity: 0.9;
-}
-
-.decor-card-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  opacity: 0.55;
-}
-
-.decor-card-delta {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.decor-card-delta.positive {
-  color: var(--positive);
-}
-
-.decor-bars {
-  min-width: 92px;
-}
-
-.decor-bars-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 5px;
-  height: 40px;
-}
-
-.decor-bar {
-  width: 8px;
-  border-radius: 3px;
-  background: var(--zapture-blue);
-  opacity: 0.55;
-}
-
-.decor-bar-accent {
-  background: var(--zapture-green);
-  opacity: 0.9;
-}
-
-.decor-sparkline {
-  width: 120px;
-}
-
-.decor-sparkline-svg {
-  display: block;
+  inset: 0;
   width: 100%;
-  height: 36px;
+  height: 100%;
 }
 
-.decor-table {
-  min-width: 150px;
-}
-
-.decor-table-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 2px 0;
-  font-size: 11px;
-  border-bottom: 1px solid var(--border);
-}
-
-.decor-table-row:last-child {
-  border-bottom: none;
-}
-
-.decor-table-row .positive {
-  color: var(--positive);
-  font-weight: 600;
-}
-
-.decor-table-row .negative {
-  color: var(--negative);
-  font-weight: 600;
-}
-
-.decor-chip {
+.decor-backdrop-grid {
   position: absolute;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.9);
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 20px -14px rgb(15 23 42 / 0.3);
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--text-h);
+  inset: 0;
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.5;
 }
 
-.decor-on-dark {
-  background: rgb(255 255 255 / 0.08);
-  border-color: rgb(255 255 255 / 0.18);
-  color: #fff;
-}
-
-/* hero placement — clustered around the phone mockup, clear of the text column */
-
-.decor-pos-bars {
-  top: 4px;
-  right: 20%;
-}
-
-.decor-pos-spark {
-  top: -8px;
-  right: 4%;
-}
-
-.decor-pos-table {
-  bottom: -4px;
-  right: 6%;
-}
-
-.decor-pos-chip-1 {
-  top: 20%;
-  right: 1%;
-}
-
-.decor-pos-chip-2 {
-  bottom: 18%;
-  right: 30%;
-}
-
-/* cta-band placement */
-
-.decor-pos-band-spark {
-  top: 14%;
-  left: 5%;
-  opacity: 0.6;
-}
-
-.decor-pos-band-chip {
-  bottom: 18%;
-  right: 7%;
-}
-
-@keyframes decor-float-a {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
+@keyframes decor-parallax-slow-move {
+  from {
+    transform: translate3d(0, 0, 0);
   }
-  50% {
-    transform: translateY(-10px) rotate(-1.5deg);
+  to {
+    transform: translate3d(0, -70px, 0);
   }
 }
 
-@keyframes decor-float-b {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
+@keyframes decor-parallax-fast-move {
+  from {
+    transform: translate3d(0, 0, 0);
   }
-  50% {
-    transform: translateY(10px) rotate(1.5deg);
+  to {
+    transform: translate3d(0, -140px, 0);
   }
 }
 
-.decor-float-a {
-  animation: decor-float-a 7s ease-in-out infinite;
+.decor-parallax-slow {
+  animation: decor-parallax-slow-move linear both;
+  animation-timeline: scroll(root);
 }
 
-.decor-float-b {
-  animation: decor-float-b 8s ease-in-out infinite;
+.decor-parallax-fast {
+  animation: decor-parallax-fast-move linear both;
+  animation-timeline: scroll(root);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .decor-float-a,
-  .decor-float-b {
+  .decor-parallax-slow,
+  .decor-parallax-fast {
     animation: none;
   }
+}
+
+/* the landing's own sections need to paint above the fixed backdrop */
+.landing > *:not(.decor-backdrop) {
+  position: relative;
+  z-index: 1;
 }
 
 .landing-footer {

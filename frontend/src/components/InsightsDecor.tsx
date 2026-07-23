@@ -1,87 +1,52 @@
-type DecorProps = {
-  className?: string
-}
-
-function BarsWidget({ className }: DecorProps) {
+export function PageInsightsBackdrop() {
   return (
-    <div className={`decor-card decor-bars ${className ?? ''}`}>
-      <span className="decor-card-label">Faturamento</span>
-      <div className="decor-bars-row">
-        <span className="decor-bar" style={{ height: '38%' }} />
-        <span className="decor-bar" style={{ height: '62%' }} />
-        <span className="decor-bar" style={{ height: '48%' }} />
-        <span className="decor-bar decor-bar-accent" style={{ height: '88%' }} />
-      </div>
-      <span className="decor-card-delta positive">+18%</span>
-    </div>
-  )
-}
-
-function SparklineWidget({ className }: DecorProps) {
-  return (
-    <div className={`decor-card decor-sparkline ${className ?? ''}`}>
-      <span className="decor-card-label">Ticket médio</span>
-      <svg viewBox="0 0 100 36" preserveAspectRatio="none" className="decor-sparkline-svg" aria-hidden="true">
+    <div className="decor-backdrop" aria-hidden="true">
+      <svg
+        className="decor-backdrop-svg decor-parallax-slow"
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="xMidYMin slice"
+      >
         <defs>
-          <linearGradient id="decor-spark-fill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="var(--zapture-blue)" stopOpacity="0.35" />
-            <stop offset="1" stopColor="var(--zapture-blue)" stopOpacity="0" />
+          <linearGradient id="decor-wave-fill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="var(--zapture-green)" stopOpacity="0.22" />
+            <stop offset="1" stopColor="var(--zapture-blue)" stopOpacity="0.16" />
+          </linearGradient>
+          <linearGradient id="decor-wave-stroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="var(--zapture-green)" stopOpacity="0.55" />
+            <stop offset="1" stopColor="var(--zapture-blue)" stopOpacity="0.55" />
           </linearGradient>
         </defs>
-        <path d="M0,30 L15,24 L30,27 L45,16 L60,20 L75,8 L100,4 L100,36 L0,36 Z" fill="url(#decor-spark-fill)" />
-        <polyline
-          points="0,30 15,24 30,27 45,16 60,20 75,8 100,4"
+        <path
+          d="M0,420 C 220,340 380,520 560,460 C 760,394 900,220 1100,260 C 1300,300 1420,180 1600,140 L1600,0 L0,0 Z"
+          fill="url(#decor-wave-fill)"
+        />
+        <path
+          d="M0,420 C 220,340 380,520 560,460 C 760,394 900,220 1100,260 C 1300,300 1420,180 1600,140"
           fill="none"
-          stroke="var(--zapture-blue)"
-          strokeWidth="2.5"
+          stroke="url(#decor-wave-stroke)"
+          strokeWidth="4"
           strokeLinecap="round"
-          strokeLinejoin="round"
         />
       </svg>
-    </div>
-  )
-}
 
-function TableWidget({ className }: DecorProps) {
-  const rows = [
-    { name: 'Capa de celular', value: '+32%', trend: 'positive' },
-    { name: 'Carregador portátil', value: '+9%', trend: 'positive' },
-    { name: 'Fone XYZ', value: '-18%', trend: 'negative' },
-  ]
-  return (
-    <div className={`decor-card decor-table ${className ?? ''}`}>
-      <span className="decor-card-label">Ranking</span>
-      {rows.map((row) => (
-        <div className="decor-table-row" key={row.name}>
-          <span>{row.name}</span>
-          <span className={row.trend}>{row.value}</span>
-        </div>
-      ))}
-    </div>
-  )
-}
+      <svg
+        className="decor-backdrop-svg decor-backdrop-bars decor-parallax-fast"
+        viewBox="0 0 1600 1000"
+        preserveAspectRatio="xMidYMax slice"
+      >
+        <g fill="var(--zapture-blue)" opacity="0.09">
+          <rect x="120" y="640" width="90" height="360" rx="18" />
+          <rect x="260" y="520" width="90" height="480" rx="18" />
+          <rect x="400" y="700" width="90" height="300" rx="18" />
+        </g>
+        <g fill="var(--zapture-green)" opacity="0.1">
+          <rect x="1180" y="560" width="100" height="440" rx="20" />
+          <rect x="1330" y="460" width="100" height="540" rx="20" />
+          <rect x="1480" y="640" width="100" height="360" rx="20" />
+        </g>
+      </svg>
 
-function KpiChip({ text, className }: DecorProps & { text: string }) {
-  return <span className={`decor-chip ${className ?? ''}`}>{text}</span>
-}
-
-export function HeroInsightsDecor() {
-  return (
-    <div className="decor-layer decor-layer-hero" aria-hidden="true">
-      <BarsWidget className="decor-pos-bars decor-float-a" />
-      <SparklineWidget className="decor-pos-spark decor-float-b" />
-      <TableWidget className="decor-pos-table decor-float-a" />
-      <KpiChip text="R$ 4.280" className="decor-pos-chip-1 decor-float-b" />
-      <KpiChip text="+18%" className="decor-pos-chip-2 decor-float-a" />
-    </div>
-  )
-}
-
-export function BandInsightsDecor() {
-  return (
-    <div className="decor-layer decor-layer-band" aria-hidden="true">
-      <SparklineWidget className="decor-pos-band-spark decor-float-a decor-on-dark" />
-      <KpiChip text="+24%" className="decor-pos-band-chip decor-float-b decor-on-dark" />
+      <div className="decor-backdrop-grid" />
     </div>
   )
 }
