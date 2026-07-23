@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSession } from './lib/useSession'
 import { apiGet } from './lib/apiClient'
+import { AppHeader } from './components/AppHeader'
 import { Landing } from './routes/Landing'
 import { Login } from './routes/Login'
 import { ConnectSource } from './routes/ConnectSource'
@@ -42,21 +43,27 @@ function App() {
 
   if (!planActive) {
     return (
-      <Routes>
-        <Route path="/plano" element={<Plano client={client} onPlanUpdated={setClient} />} />
-        <Route path="*" element={<Navigate to="/plano" replace />} />
-      </Routes>
+      <>
+        <AppHeader showNav={false} />
+        <Routes>
+          <Route path="/plano" element={<Plano client={client} onPlanUpdated={setClient} />} />
+          <Route path="*" element={<Navigate to="/plano" replace />} />
+        </Routes>
+      </>
     )
   }
 
   return (
-    <Routes>
-      <Route path="/relatorio" element={<Report />} />
-      <Route path="/conectar" element={<ConnectSource />} />
-      <Route path="/configuracoes" element={<Settings />} />
-      <Route path="/plano" element={<Plano client={client} onPlanUpdated={setClient} />} />
-      <Route path="*" element={<Navigate to="/relatorio" replace />} />
-    </Routes>
+    <>
+      <AppHeader />
+      <Routes>
+        <Route path="/relatorio" element={<Report />} />
+        <Route path="/conectar" element={<ConnectSource />} />
+        <Route path="/configuracoes" element={<Settings />} />
+        <Route path="/plano" element={<Plano client={client} onPlanUpdated={setClient} />} />
+        <Route path="*" element={<Navigate to="/relatorio" replace />} />
+      </Routes>
+    </>
   )
 }
 

@@ -1,5 +1,4 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
 import { apiGet } from '../lib/apiClient'
 import { InsightList } from '../components/InsightList'
 import { LastSyncedBadge } from '../components/LastSyncedBadge'
@@ -74,11 +73,6 @@ export function Report() {
     <div className="page">
       <div className="page-header">
         <h1>Relatório</h1>
-        <div>
-          <Link to="/configuracoes">Configurações</Link>
-          {' · '}
-          <Link to="/conectar">Gerenciar fontes de dados</Link>
-        </div>
       </div>
 
       <form className="date-filter" onSubmit={applyCustomRange}>

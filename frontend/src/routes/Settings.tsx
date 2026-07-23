@@ -1,5 +1,4 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
 import { apiGet, apiPatchJson, apiPutJson } from '../lib/apiClient'
 import type { ClientOut } from '../types/client'
 import type { ProductOut } from '../types/product'
@@ -66,7 +65,6 @@ export function Settings() {
     <div className="page">
       <div className="page-header">
         <h1>Configurações</h1>
-        <Link to="/relatorio">Voltar ao relatório</Link>
       </div>
 
       <section>
