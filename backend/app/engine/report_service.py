@@ -20,6 +20,12 @@ from app.engine.metrics.new_customers import NewCustomersResult, compute_new_vs_
 from app.engine.metrics.ranking import RankingEntry, compute_ranking
 from app.engine.metrics.revenue import RevenueResult, compute_revenue
 from app.engine.metrics.ticket import TicketResult, compute_average_ticket
+from app.engine.metrics.top_products import (
+    BestsellerResult,
+    HighestPricedSaleResult,
+    compute_bestseller,
+    compute_highest_priced_sale,
+)
 from app.engine.metrics.types import SalesRecord
 from app.engine.metrics.units import UnitsResult, compute_units_sold
 from app.engine.metrics.volume import VolumeResult, compute_order_volume
@@ -41,6 +47,8 @@ class Report:
     ranking_products: list[RankingEntry]
     ranking_categories: list[RankingEntry]
     churned_customers: list[ChurnedCustomer]
+    bestseller: BestsellerResult | None
+    highest_priced_sale: HighestPricedSaleResult | None
     insights: list[Insight]
     last_synced_at: object
     last_sync_label: str | None
@@ -99,6 +107,9 @@ def generate_report(db: Session, client_id: uuid.UUID, period_start: date, perio
     churned_customers = compute_churned_customers(full_history, as_of=period_end)
     new_customers = compute_new_vs_returning(current_records, full_history, period_start=period_start)
 
+    bestseller = compute_bestseller(current_records)
+    highest_priced_sale = compute_highest_priced_sale(current_records)
+
     candidates = build_candidates(
         revenue=revenue,
         ticket=ticket,
@@ -130,6 +141,8 @@ def generate_report(db: Session, client_id: uuid.UUID, period_start: date, perio
         ranking_products=ranking_products,
         ranking_categories=ranking_categories,
         churned_customers=churned_customers,
+        bestseller=bestseller,
+        highest_priced_sale=highest_priced_sale,
         insights=insights,
         last_synced_at=data_source.last_synced_at if data_source else None,
         last_sync_label=data_source.last_sync_label if data_source else None,

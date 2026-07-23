@@ -161,6 +161,24 @@ export function Report() {
               value={String(report.new_customers.returning_customers_count)}
               variationPct={null}
             />
+            <MetricCard
+              label="Produto mais vendido"
+              value={
+                report.bestseller
+                  ? `${report.bestseller.product_name} (${report.bestseller.units_sold} un.)`
+                  : '—'
+              }
+              variationPct={null}
+            />
+            <MetricCard
+              label="Venda de maior preço"
+              value={
+                report.highest_priced_sale
+                  ? `${report.highest_priced_sale.product_name} — ${formatCurrency(report.highest_priced_sale.unit_price)}`
+                  : '—'
+              }
+              variationPct={null}
+            />
           </section>
 
           {report.negative_margin_products.length > 0 && (

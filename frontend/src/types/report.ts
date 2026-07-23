@@ -55,6 +55,20 @@ export interface RankingEntryOut {
   variation_abs: number
 }
 
+export interface BestsellerOut {
+  product_key: string
+  product_name: string
+  units_sold: number
+  revenue: number
+}
+
+export interface HighestPricedSaleOut {
+  product_key: string
+  product_name: string
+  unit_price: number
+  order_id: string
+}
+
 export interface ChurnedCustomerOut {
   customer_id: string
   last_purchase_at: string
@@ -84,6 +98,8 @@ export interface ReportOut {
   ranking_products: RankingEntryOut[]
   ranking_categories: RankingEntryOut[]
   churned_customers: ChurnedCustomerOut[]
+  bestseller: BestsellerOut | null
+  highest_priced_sale: HighestPricedSaleOut | null
   insights: InsightOut[]
   last_synced_at: string | null
   last_sync_label: string | null

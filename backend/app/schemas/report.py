@@ -60,6 +60,20 @@ class RankingEntryOut(BaseModel):
     variation_abs: float
 
 
+class BestsellerOut(BaseModel):
+    product_key: str
+    product_name: str
+    units_sold: float
+    revenue: float
+
+
+class HighestPricedSaleOut(BaseModel):
+    product_key: str
+    product_name: str
+    unit_price: float
+    order_id: str
+
+
 class ChurnedCustomerOut(BaseModel):
     customer_id: str
     last_purchase_at: date
@@ -89,6 +103,8 @@ class ReportOut(BaseModel):
     ranking_products: list[RankingEntryOut]
     ranking_categories: list[RankingEntryOut]
     churned_customers: list[ChurnedCustomerOut]
+    bestseller: BestsellerOut | None
+    highest_priced_sale: HighestPricedSaleOut | None
     insights: list[InsightOut]
     last_synced_at: datetime | None
     last_sync_label: str | None
