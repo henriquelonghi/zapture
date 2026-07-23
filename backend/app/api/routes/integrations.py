@@ -12,7 +12,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_client, get_db
+from app.api.deps import get_current_client, get_db, require_active_plan
 from app.core.config import get_settings
 from app.ingestion.webhook_pipeline import ingest_order_rows
 from app.integrations import mercado_livre, nuvemshop, oauth_state, shopify
@@ -55,7 +55,7 @@ def _redirect_to_frontend(path: str = "/relatorio") -> RedirectResponse:
 
 
 @router.get("/integrations/shopify/authorize", response_model=AuthorizeUrlOut)
-def shopify_authorize(shop: str, client: Client = Depends(get_current_client)) -> AuthorizeUrlOut:
+def shopify_authorize(shop: str, client: Client = Depends(require_active_plan)) -> AuthorizeUrlOut:
     state = oauth_state.create_state(client.id, "shopify")
     url = shopify.build_authorize_url(shop, state) if state else None
     if not url:
@@ -104,7 +104,7 @@ async def shopify_webhook(request: Request, db: Session = Depends(get_db)) -> di
 
 
 @router.get("/integrations/mercado_livre/authorize", response_model=AuthorizeUrlOut)
-def mercado_livre_authorize(client: Client = Depends(get_current_client)) -> AuthorizeUrlOut:
+def mercado_livre_authorize(client: Client = Depends(require_active_plan)) -> AuthorizeUrlOut:
     state = oauth_state.create_state(client.id, "mercado_livre")
     url = mercado_livre.build_authorize_url(state) if state else None
     if not url:
@@ -157,7 +157,7 @@ async def mercado_livre_webhook(request: Request, db: Session = Depends(get_db))
 
 
 @router.get("/integrations/nuvemshop/authorize", response_model=AuthorizeUrlOut)
-def nuvemshop_authorize(client: Client = Depends(get_current_client)) -> AuthorizeUrlOut:
+def nuvemshop_authorize(client: Client = Depends(require_active_plan)) -> AuthorizeUrlOut:
     state = oauth_state.create_state(client.id, "nuvemshop")
     url = nuvemshop.build_authorize_url(state) if state else None
     if not url:

@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     nuvemshop_client_id: str | None = None
     nuvemshop_client_secret: str | None = None
 
+    stripe_secret_key: str | None = None
+    stripe_price_id: str | None = None
+    """Price ID do plano único (R$ 47/mês) criado no Dashboard do Stripe."""
+    stripe_webhook_secret: str | None = None
+
 
 @lru_cache
 def get_settings() -> Settings:

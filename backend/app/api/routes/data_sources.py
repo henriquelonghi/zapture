@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_client, get_db
+from app.api.deps import get_current_client, get_db, require_active_plan
 from app.core.google_credentials import get_google_service_account_credentials
 from app.core.supabase_client import store_raw_upload
 from app.ingestion.pipeline import run_ingestion
@@ -27,7 +27,7 @@ def _to_result_out(outcome) -> IngestionResultOut:
 async def upload_sales_file(
     file: UploadFile,
     db: Session = Depends(get_db),
-    client: Client = Depends(get_current_client),
+    client: Client = Depends(require_active_plan),
 ) -> IngestionResultOut:
     content = await file.read()
     filename = file.filename or "arquivo"
@@ -59,7 +59,7 @@ async def upload_sales_file(
 def connect_sheets(
     payload: SheetsConnectIn,
     db: Session = Depends(get_db),
-    client: Client = Depends(get_current_client),
+    client: Client = Depends(require_active_plan),
 ) -> IngestionResultOut:
     credentials = get_google_service_account_credentials()
     if credentials is None:

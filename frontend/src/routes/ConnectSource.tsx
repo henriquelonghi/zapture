@@ -1,114 +1,66 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { apiPostFile, apiPostJson } from '../lib/apiClient'
-import type { IngestionResultOut } from '../types/report'
+import { apiGet } from '../lib/apiClient'
+import type { AuthorizeUrlOut } from '../types/integrations'
 
-type Method = 'upload' | 'sheets'
+type Platform = 'mercado_livre' | 'shopify' | 'nuvemshop'
+
+const PLATFORMS: { id: Platform; name: string; description: string }[] = [
+  { id: 'mercado_livre', name: 'Mercado Livre', description: 'Autorize o acesso oficial à sua conta de vendedor.' },
+  { id: 'shopify', name: 'Shopify', description: 'Informe o domínio da sua loja e autorize o app.' },
+  { id: 'nuvemshop', name: 'Nuvemshop', description: 'Autorize o acesso oficial à sua loja.' },
+]
 
 export function ConnectSource() {
-  const navigate = useNavigate()
-  const [method, setMethod] = useState<Method | null>(null)
-  const [file, setFile] = useState<File | null>(null)
-  const [spreadsheetId, setSpreadsheetId] = useState('')
-  const [rangeName, setRangeName] = useState('A1:Z10000')
+  const [shopDomain, setShopDomain] = useState('')
+  const [loadingPlatform, setLoadingPlatform] = useState<Platform | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [warnings, setWarnings] = useState<string[]>([])
-  const [loading, setLoading] = useState(false)
 
-  async function handleUpload() {
-    if (!file) return
+  async function connect(platform: Platform) {
     setError(null)
-    setLoading(true)
-    try {
-      const result = await apiPostFile<IngestionResultOut>('/data-sources/upload', file)
-      setWarnings(result.warnings)
-      navigate('/relatorio')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao enviar arquivo.')
-    } finally {
-      setLoading(false)
+
+    if (platform === 'shopify' && !shopDomain.trim()) {
+      setError('Informe o domínio da sua loja Shopify (ex: sualoja.myshopify.com).')
+      return
     }
-  }
 
-  async function handleConnectSheets() {
-    setError(null)
-    setLoading(true)
+    setLoadingPlatform(platform)
     try {
-      const result = await apiPostJson<IngestionResultOut>('/data-sources/sheets/connect', {
-        spreadsheet_id: spreadsheetId,
-        range_name: rangeName,
-      })
-      setWarnings(result.warnings)
-      navigate('/relatorio')
+      const query = platform === 'shopify' ? `?shop=${encodeURIComponent(shopDomain.trim())}` : ''
+      const result = await apiGet<AuthorizeUrlOut>(`/integrations/${platform}/authorize${query}`)
+      window.location.href = result.authorize_url
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao conectar planilha.')
-    } finally {
-      setLoading(false)
+      setError(err instanceof Error ? err.message : 'Erro ao iniciar a conexão.')
+      setLoadingPlatform(null)
     }
   }
 
   return (
     <div className="page">
       <h1>Conecte a origem dos seus dados de venda</h1>
+      <p>Cada plataforma exige autorização oficial via OAuth — a Zapture nunca pede sua senha.</p>
 
-      {!method && (
-        <div className="method-grid">
-          <button className="method-card" onClick={() => setMethod('sheets')}>
-            <span className="method-icon">📊</span>
-            <strong>Google Sheets</strong>
-            <p>Fica sincronizado sozinho toda vez que você abre o relatório.</p>
-          </button>
-          <button className="method-card" onClick={() => setMethod('upload')}>
-            <span className="method-icon">📁</span>
-            <strong>Upload de CSV/XLSX</strong>
-            <p>Mais rápido pra começar, mas você precisa reenviar o arquivo pra atualizar.</p>
-          </button>
-        </div>
-      )}
+      <div className="method-grid">
+        {PLATFORMS.map((platform) => (
+          <div className="method-card" key={platform.id} style={{ cursor: 'default' }}>
+            <strong>{platform.name}</strong>
+            <p>{platform.description}</p>
 
-      {method === 'upload' && (
-        <div className="method-form">
-          <input type="file" accept=".csv,.xlsx,.xls" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
-          <button onClick={handleUpload} disabled={!file || loading}>
-            {loading ? 'Enviando...' : 'Enviar arquivo'}
-          </button>
-          <button className="link-button" onClick={() => setMethod(null)}>
-            Voltar
-          </button>
-        </div>
-      )}
+            {platform.id === 'shopify' && (
+              <input
+                value={shopDomain}
+                onChange={(e) => setShopDomain(e.target.value)}
+                placeholder="sualoja.myshopify.com"
+              />
+            )}
 
-      {method === 'sheets' && (
-        <div className="method-form">
-          <label>
-            ID da planilha
-            <input
-              value={spreadsheetId}
-              onChange={(e) => setSpreadsheetId(e.target.value)}
-              placeholder="encontrado na URL da planilha"
-            />
-          </label>
-          <label>
-            Intervalo
-            <input value={rangeName} onChange={(e) => setRangeName(e.target.value)} />
-          </label>
-          <button onClick={handleConnectSheets} disabled={!spreadsheetId || loading}>
-            {loading ? 'Conectando...' : 'Conectar planilha'}
-          </button>
-          <button className="link-button" onClick={() => setMethod(null)}>
-            Voltar
-          </button>
-        </div>
-      )}
+            <button onClick={() => connect(platform.id)} disabled={loadingPlatform !== null}>
+              {loadingPlatform === platform.id ? 'Redirecionando...' : `Conectar ${platform.name}`}
+            </button>
+          </div>
+        ))}
+      </div>
 
       {error && <p className="error-text">{error}</p>}
-      {warnings.length > 0 && (
-        <ul className="warning-list">
-          {warnings.map((w) => (
-            <li key={w}>{w}</li>
-          ))}
-        </ul>
-      )}
     </div>
   )
 }

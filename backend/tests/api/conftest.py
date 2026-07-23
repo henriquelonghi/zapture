@@ -32,7 +32,10 @@ def db_session():
 
 @pytest.fixture()
 def client_record(db_session):
-    c = Client(name="Loja Teste")
+    # plan_status="active" por padrão: a maioria dos testes de rota cobre
+    # comportamento de feature, não o gate de cobrança em si (esse tem teste
+    # dedicado em test_billing_route.py / test_requires_active_plan).
+    c = Client(name="Loja Teste", plan_status="active")
     db_session.add(c)
     db_session.commit()
     return c

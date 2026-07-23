@@ -47,13 +47,45 @@ ainda falta pra isso funcionar com cliente real:
   identificação, prática padrão, mas ainda não é autorização formal de
   parceiro. Trocar pelos assets oficiais assim que conseguir acesso de
   parceiro em cada plataforma (mesmo item de aprovação já listado acima).
-- [ ] Refazer `ConnectSource.tsx`: hoje ainda mostra a tela de "escolher
-  método de importação" (Sheets/upload); precisa virar "escolher plataforma"
-  chamando `GET /integrations/{platform}/authorize` e redirecionando o
-  navegador pra `authorize_url` retornada.
+- [x] ~~Refazer ConnectSource.tsx~~ — feito: agora mostra as três plataformas
+  (Mercado Livre, Shopify — com campo de domínio da loja —, Nuvemshop), cada
+  botão chama `GET /integrations/{platform}/authorize` e redireciona o
+  navegador pra `authorize_url` retornada. Testado no navegador com conta
+  real + plano ativo simulado direto no banco.
 - [ ] Job/endpoint pra fazer o backfill inicial de pedidos históricos ao
   conectar uma conta nova — hoje só ingere pedidos que chegam via webhook
   dali pra frente; nada preenche o antes da conexão.
+
+## Plano e pagamento (2026-07-23) — construído, falta a conta Stripe de verdade
+
+A pedido explícito do usuário: login agora cai numa página de "Seu plano"
+(`/plano`) antes de liberar qualquer conexão de dado — só depois do
+pagamento confirmado (via webhook do Stripe) o cliente pode conectar
+Mercado Livre/Shopify/Nuvemshop. Gateway escolhido: **Stripe** (decisão
+explícita do usuário, não Mercado Pago). Testado de ponta a ponta no
+navegador simulando os dois estados (`plan_status` pendente e ativo direto
+no banco, já que não existe conta Stripe real ainda) — inclusive achei e
+corrigi uma race condition real no `App.tsx` nesse processo (ver `CLAUDE.md`
+§ Frontend architecture).
+
+- [ ] **Criar produto + price recorrente no Dashboard do Stripe** (R$ 47,00
+  mensal, mesmo valor da landing) e colocar `STRIPE_SECRET_KEY` +
+  `STRIPE_PRICE_ID` em `backend/.env`. Sem isso, `/billing/checkout` sempre
+  responde 500 (degrada graciosamente, não quebra o app).
+- [ ] **Configurar o webhook do Stripe** apontando pra
+  `/webhooks/stripe` do backend em produção, escutando pelo menos
+  `checkout.session.completed`, `customer.subscription.updated` e
+  `customer.subscription.deleted`; copiar o signing secret gerado pra
+  `STRIPE_WEBHOOK_SECRET`. Sem isso o pagamento nunca ativa a conta de
+  verdade (o checkout até abre, mas ninguém nunca vira `plan_status=active`).
+- [ ] Testar o fluxo de pagamento de ponta a ponta com uma assinatura real
+  (ou o modo de teste do Stripe) — só foi testado simulando o
+  `plan_status` direto no banco até agora, nunca um checkout de verdade.
+- [ ] Decidir o que acontece quando uma assinatura cai em `past_due` (Stripe
+  tenta cobrar de novo e falha) — hoje o webhook só grava o status cru
+  vindo do Stripe em `plan_status`, sem nenhum tratamento de UX específico
+  pra esse caso (o gate `require_active_plan` só libera `"active"`, então
+  na prática já bloqueia, mas a mensagem que o cliente vê é genérica).
 
 ## Credenciais e contas externas (só você resolve)
 

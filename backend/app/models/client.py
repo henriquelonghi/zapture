@@ -21,6 +21,13 @@ class Client(Base):
     whatsapp_phone: Mapped[str | None] = mapped_column(String(20), nullable=True)
     """Número em formato E.164 (ex: 5511999998888). Sem isso, o cliente não
     entra no job de resumo periódico — só recebe o relatório dinâmico."""
+    plan_status: Mapped[str] = mapped_column(String(20), default="pending")
+    """'pending' até a assinatura ser confirmada pelo webhook do Stripe,
+    depois espelha o status da subscription de lá ('active', 'past_due',
+    'canceled', ...). Conectar fonte de dado exige 'active' — ver
+    app/api/deps.py::require_active_plan."""
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    stripe_subscription_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     members: Mapped[list["ClientMember"]] = relationship(back_populates="client", cascade="all, delete-orphan")
