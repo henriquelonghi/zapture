@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Zapture is a SaaS that computes billing/sales insights for e-commerce sellers (Mercado Livre, Shopify, Nuvemshop) and delivers them proactively via WhatsApp, instead of a passive dashboard the seller has to check. Full product spec (target audience, phased scope, metric definitions, architecture rationale) lives in `descricao.md` — read it before making product-shape decisions (which metrics to add, what the WhatsApp summary should contain, onboarding flow, etc).
 
+**Pivot (2026-07-22, see `descricao.md` §1):** the only supported data source going forward is the official platform API (Mercado Livre, Shopify, Nuvemshop in parallel), for real-time-via-webhook data. Sheets/upload are dropped from the roadmap. The code below (`SheetsSource`, `UploadSource`, `resync_sheets_if_needed`) still reflects the pre-pivot architecture and hasn't been migrated yet — check `pendencias.md` before assuming it matches current product direction.
+
 Golden rule from the spec: if an LLM is ever used (Fase 2 WhatsApp Q&A), it decides *which question* was asked (intent), never *the answer* (the number). Numbers always come from the deterministic engine described below.
 
 Repo is a monorepo: `backend/` (FastAPI) + `frontend/` (Vite/React), each with its own dependency tree and no shared package.
